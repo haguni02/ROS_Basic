@@ -16,11 +16,11 @@ source .bashrc
 ```
 
 ## ROS 동작 테스트 
-* tutlesim 패키지 
+* turtlesim 패키지 
 ```
 # ubuntu terminal
 roscore
-rosrun tutlesim tutlesim_node
-rosrun tutlesim tutle_teleop_key
+rosrun turtlesim turtlesim_node
+rosrun turtlesim turtle_teleop_key
 rosrun rqt_graph rqt_graph
 ```
