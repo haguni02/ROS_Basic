@@ -9,12 +9,12 @@
 > * <img src="./img/ROS003.png" width="600"/> 
 
 ## 현재의 ROS 생태계 
-* <img src="./img/ROS004.png" width="600"/> 
+* <img src="./img/ROS004.png" width="700"/> 
 
 ## ROS의 특징 
 1. 통신 인프라 
-> * <img src="./img/ROS005.png" width="600"/> 
+> * <img src="./img/ROS005.png" width="700"/> 
 2. 로봇 관련 다양한 기능 지원
-> * <img src="./img/ROS006.png" width="600"/>
+> * <img src="./img/ROS006.png" width="700"/>
 3. 다양한 개발도구 지원 
-> * <img src="./img/ROS007.png" width="600"/> 
+> * <img src="./img/ROS007.png" width="700"/> 
