@@ -20,3 +20,34 @@
 > * <img src="./img/ROS010.png" width="700"/> 
 > * 서비스처럼 양방향을 요구하나 요청 처리 후 응답까지 오랜 시간이 걸리고 중간 결괏값이 필요한 경우에 사용되는 메시지 통신 방식이다. 
 > * 서비스와 통신방식이 비슷하지만 중간 결괏값에 해당하는 feedback이 추가되었다.
+
+### Message 통신 과정 
+1. 마스터 구동 : XMLRPC(XML-Remote Procedure Call) 
+* $ roscore 
+* <img src="./img/ROS011.png" width="700"/>
+2. Subscriber Node 구동 
+* $ rosrun Package_name Node_name
+* <img src="./img/ROS012.png" width="700"/>
+3. Publisher Node 구동
+* $ rosrun Package_name Node_name
+* <img src="./img/ROS013.png" width="700"/>
+4. Publisher 정보 알림
+* Master는 Subscriber Node에게 새로운 Publisher 정보를 알린다.
+* <img src="./img/ROS014.png" width="700"/> 
+5. Publisher Node에 접속 요청
+* Master로부터 받은 Publisher 정보를 이용하여 TCPROS 접속을 요청
+* <img src="./img/ROS015.png" width="700"/>
+6. Subscriber Node에 접속 응답
+* 접속 응답에 해당되는 자신의 TCP URI 주소와 포트번호를 전송 
+* <img src="./img/ROS016.png" width="700"/>
+7. TCP 접속 
+* TCPROS를 이용하여 Publisher Node와 직접 연결한다. 
+* <img src="./img/ROS017.png" width="700"/>
+8-1. Topic 메시지 전송 
+* Publisher Node는 Subscriber Node에게 메시지를 전송
+* <img src="./img/ROS018.png" width="700"/>
+* Topic방식에서는 접속을 끊지 않는 이상 지속적으로 메시지를 전송한다. 
+* <img src="./img/ROS019.png" width="700"/>
+8-2. Service 메시지 전송
+* 1회에 한해 접속, 서비스 요청 및 서비스 응답이 수행되고 서로간의 접속을 끊는다.
+* <img src="./img/ROS020.png" width="700"/>
