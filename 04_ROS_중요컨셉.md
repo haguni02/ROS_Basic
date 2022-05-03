@@ -51,3 +51,21 @@
 8-2. Service 메시지 전송
 * 1회에 한해 접속, 서비스 요청 및 서비스 응답이 수행되고 서로간의 접속을 끊는다.
 * <img src="./img/ROS020.png" width="700"/>
+
+## Message 데이터 형태 
+* Parameter : Node에서 사용되는 설정값이다. 필요에 따라서 외부에서 읽거나 쓸 수 있고, 실시간으로 외부에서 쓰기 기능을 이용하여 설정값을 변경할 수 있다. 예를 들어 외부 장치와 연결되는 PC의 USB 포트나 카메라 캘리브레이션 값, 모터 속도나 명령어들의 최댓값과 최솟값 등의 설정을 지정할 수 있다. 
+* Parameter Server : Package에서 Parameter를 사용할 때, 각 Prameter를 등록하는 서버를 말한다. Parameter Server는 Master의 한 기능이기도 하다. 
+* ROS 메시지 데이터 구조
+> * <img src="./img/ROS021.png" width="700"/>
+> * Topic, Service, Action은 모두 메시지 사용
+> * [ROS위키:msg](https://wiki.ros.org/msg), [ROS위키:common_msg](https://wiki.ros.org/common_msgs)
+
+## Message 통신 예 : turtlesim
+```
+$ roscore
+$ rosrun turtlesim turtle_node
+$ rosrun turtlesim turtle_teleop_key
+```
+* <img src="./img/ROS022.png" width="700"/>
+* geometry_msgs/Twist 메시지 통신 
+* <img src="./img/ROS023.png" width="700"/>
