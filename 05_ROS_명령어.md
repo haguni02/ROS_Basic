@@ -49,6 +49,15 @@ $ rosservice call [서비스 이름] [파라미터] # 입력된 파라미터로 
 ```
 * rosparam 명령어 
 ```
+$ rosparam list # 같은 네트워크에서 사용 중인 파라미터 목록 보기
+$ rosparam get [파라미터 이름] # 파라미터 값 불러오기 
+$ rosparam dump [파일 이름] # 파라미터를 지정한 파일에 저장
+$ rosparam set [파라미터 이름] # 파라미터 값 설정 
+$ rosparam load [파일 이름] # 지정한 파일을 불러와 현재의 파라미터 값으로 사용
+$ rosparam delete [파라미터 이름] # 파라미터 삭제
+```
+* rosmsg 명령어
+```
 ```
 
 ## ROS catkin 명령어
