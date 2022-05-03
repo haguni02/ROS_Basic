@@ -22,7 +22,7 @@ source .bashrc
 roscore
 rosrun turtlesim turtlesim_node
 rosrun turtlesim turtle_teleop_key
-rosrun rqt_graph rqt_graph
+rqt_graph
 ```
 
 ## ROS 통합개발환경(IDE)
