@@ -28,3 +28,10 @@ rqt_graph
 ## ROS 통합개발환경(IDE)
 * Qtcreator + Qt Creator Plugin for ROS
 * Visual Studio Code + ROS Extension
+
+## QtCreator 설치
+```
+$ sudo apt-get install qtcreator
+# 구동
+$ qtcreator 
+```
