@@ -58,14 +58,41 @@ $ rosparam delete [파라미터 이름] # 파라미터 삭제
 ```
 * rosmsg 명령어
 ```
+$ rosmsg list # 모든 메시지 목록 표시
+$ rosmsg show [메시지 이름] # 지정한 메시지 정보 표시
+$ rosmsg md5 [메시지 이름] # md5sum을 표시
+$ rosmsg package [패키지 이름] # 지정한 패키지에서 사용되는 메시지 목록 표시
+$ rosmsg packages # 메시지를 사용하는 모든 패키지 목록 표시 
+```
+* rossrv 명령어
+```
+$ rossrv list # 모든 서비스 목록 표시
+$ rossrv show [서비스 이름] # 지정한 서비스 정보 표시 
+$ rossrv md5 [서비스 이름] # md5sum을 표시
+$ rossrv package [패키지 이름] # 지정한 패키지에서 사용되는 서비스 목록 표시
+$ rossrv packages # 서비스를 사용하는 모든 패키지 목록 표시
+```
+* rosbag 명령어
+```
+$ rosbag [옵션][토픽 이름] # 지정한 토픽의 메시지 기록
+$ rosbag info [bag 파일 이름] # bag 파일의 정보 확인
+$ rosbag play [bag 파일 이름] # 지정한 bag 파일 재생
+$ rosbag compress [bag 파일 이름] # 지정한 bag 파일 압축
+$ rosbag decompress [bag 파일 이름] # 지정한 bag 파일 압축 해제
 ```
 
 ## ROS catkin 명령어
 * <img src="./img/ROS027.png" width="700" />
 ```
+$ catkin_create_pkg [패키지 이름] [의존성 패키지1] [의존성 패키지2] ... # 패키지를 자동으로 생성 
+$ catkin_make [옵션] # 캐킨 빌드 시스템에 기반을 둔 빌드 
+$ catkin_find [패키지 이름] # 캐킨 검색, 작업 공간을 찾아서 표시 
 ```
 
 ## ROS 패키지 명령어 
 * <img src="./img/ROS028.png" width="700" />
 ```
+$ rospack [옵션] [패키지 이름] # 지정한 ROS 패키지의 관련 정보를 표시 
+$ rosdep [옵션] # ROS 해당 패키지의 의존성 파일 설치
+$ roslocate # ROS 패키지의 정보 표시
 ```
