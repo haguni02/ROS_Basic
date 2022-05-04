@@ -33,3 +33,12 @@
 * rqt는 Qt로 개발되어 있어 유저들이 자유롭게 플러그인을 개발하여 추가할 수 있다. 
 
 ## RQT 플러그인 
+* RQT 초기화면 및 Plugins 선택 화면 
+> * <img src="./img/ROS031.png" width="700" />
+* RQT 플러그인 구성 
+> * <img src="./img/ROS032.png" width="700" />
+> * <img src="./img/ROS033.png" width="700" />
+> * <img src="./img/ROS034.png" width="700" />
+
+## Gazebo란?
+* <img src="./img/ROS035.png" width="700" />
