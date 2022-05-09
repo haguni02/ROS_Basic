@@ -186,7 +186,7 @@ $ catkin_make       # catkin 빌드 실행
 ```
 $ rosrun ros_tutorials_topic topic_publisher
 ```
-* <img src="ROS038.png" width="700" /> 
+* <img src="./img/ROS038.png" width="700" /> 
 * rostopic 명령어를 이용하여 현재 ROS 네트워크에서 사용중인 토픽 목록, 주기, 데이터 대역폭, 내용 확인 등이 가능하다. 
 ```
 $ rostopic list
@@ -198,11 +198,11 @@ $ rostopic echo /ros_tutorial_msg
 ```
 $ rosrun ros_tutorials_topic topic_subscriber 
 ```
-* <img src="ROS039.png" width="700" /> 
+* <img src="./img/ROS039.png" width="700" /> 
 10. 실행된 노드들의 통신 상태 확인 
 ```
 $ rqt_graph
 # 또는
 $ rqt [Plugins] -> [Introspection] -> [Node Graph]
 ```
-* <img src="ROS040.png" width="700" /> 
+* <img src="./img/ROS040.png" width="700" /> 
