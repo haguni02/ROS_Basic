@@ -117,7 +117,7 @@ int main(int argc, char **argv)                 // 노드 메인 함수
   // 루프 주기를 설정한다. "10" 이라는 것은 10Hz를 말하는 것으로 0.1초 간격으로 반복된다. 
   ros::Rate loop_rate(10);
 
-  ros_tutorials_topic::MsgTutorial msg;     // MsgTutorial 메시지 파일 형식으로 msg라는 메시지를 선언
+  ros_tutorials_topic::MsgTutorial msg;     // MsgTutorial 메시지 파일 형식으로 msg 라는 메시지를 선언
   int count = 0;                            // 메시지에 사용될 변수 선언 
 
   while (ros::ok())
@@ -163,7 +163,7 @@ int main(int argc, char **argv)                         // 노드 메인 함수
 
   ros::NodeHandle nh;                                   // ROS 시스템과 통신을 위한 노드 핸들 선언
   
-  // 서브스크라이버 선언, ros_tutorial_topic 패키지의 MsgTutorial 메시지 파일을 이용한 서브스크라이버 ros_tutorial_sub를 작성한다.
+  // 서브스크라이버 선언, ros_tutorial_topic 패키지의 MsgTutorial 메시지 파일을 이용한 서브스크라이버 ros_tutorial_sub 를 작성한다.
   // 토픽명은 "ros_tutorial_msg" 이며 서브스크라이버 큐(queue) 사이즈를 100개로 설정한다.
   ros::Subscriber ros_tutorial_sub = nh.subscribe("ros_tutorial_msg", 100, msgCallback);
 
@@ -181,4 +181,28 @@ $ catkin_make       # catkin 빌드 실행
 * 빌드된 결과물은 /catkin_ws의 /build와 /devel 폴더에 각각 생성
 * /build 폴더에는 캐킨 빌드에서 사용된 설정 내용이 저장
 * /devel/lib/ros_tutorials_topic 폴더에는 실행 파일이 저장
-* /devel/include/ros_tutorials_topic 폴더에는 메시지 파일로부터 자동 생성된 메시지 헤더파일이 
+* /devel/include/ros_tutorials_topic 폴더에는 메시지 파일로부터 자동 생성된 메시지 헤더파일이 저장
+8. 퍼블리셔 실행 
+```
+$ rosrun ros_tutorials_topic topic_publisher
+```
+* <img src="ROS038.png" width="700" /> 
+* rostopic 명령어를 이용하여 현재 ROS 네트워크에서 사용중인 토픽 목록, 주기, 데이터 대역폭, 내용 확인 등이 가능하다. 
+```
+$ rostopic list
+$ rostopic hz /ros_tutorial_msg
+$ rostopic bw /ros_tutorial_msg
+$ rostopic echo /ros_tutorial_msg
+```
+9. 서브스크라이버 실행 
+```
+$ rosrun ros_tutorials_topic topic_subscriber 
+```
+* <img src="ROS039.png" width="700" /> 
+10. 실행된 노드들의 통신 상태 확인 
+```
+$ rqt_graph
+# 또는
+$ rqt [Plugins] -> [Introspection] -> [Node Graph]
+```
+* <img src="ROS040.png" width="700" /> 
