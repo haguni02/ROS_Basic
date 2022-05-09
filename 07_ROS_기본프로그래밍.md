@@ -206,3 +206,218 @@ $ rqt_graph
 $ rqt [Plugins] -> [Introspection] -> [Node Graph]
 ```
 * <img src="./img/ROS040.png" width="700" /> 
+
+## Service / Service server / Service client
+* <img src="./img/ROS041.png" width="700" /> 
+> * ROS에서는 양방향 통신이 필요할때 Service 라는 메시지 통신을 사용한다. 이때 요청(request)이 있을 때만 응답(response)하는 Service server 와 요청하고 응답 받는 Service client 로 나뉜다.
+1. 패키지 생성
+```
+$ cd ~/catkin_ws/src
+$ catkin_create_pkg ros_tutorials_service message_generation std_msgs roscpp
+```
+```
+$ cd ros_tutorials_service
+$ ls 
+include         -> 헤더 파일 폴더
+src             -> 소스 코드 폴더
+CMakeLists.txt  -> 빌드 설정 파일
+package.xml     -> 패키지 설정 파일
+```
+2. 패키지 설정 파일(package.xml) 수정
+* ROS의 필수 설정 파일 중 하나인 package.xml은 패키지 정보를 담은 XML 파일로서 패키지 이름, 저작자, 라이선스, 의존성 패키지 등을 기술하고 있다. 
+```
+$ gedit package.xml
+```
+```xml
+<?xml version="1.0"?>
+<package>
+  <name>ros_tutorials_service</name>
+  <version>0.1.0</version>
+  <description>ROS turtorial package to learn the service</description>
+  <license>Apache License 2.0</license>
+  <author email="pyo@robotis.com">Yoonseok Pyo</author>
+  <maintainer email="pyo@robotis.com">Yoonseok Pyo</maintainer>
+  <url type="bugtracker">https://github.com/ROBOTIS-GIT/ros_tutorials/issues</url>
+  <url type="repository">https://github.com/ROBOTIS-GIT/ros_tutorials.git</url>
+  <url type="website">http://www.robotis.com</url>
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>std_msgs</build_depend>
+  <build_depend>message_generation</build_depend>
+  <run_depend>roscpp</run_depend>
+  <run_depend>std_msgs</run_depend>
+  <run_depend>message_runtime</run_depend>
+  <export></export>
+</package>
+```
+3. 빌드 설정 파일(CMakeLists.txt) 수정
+```
+cmake_minimum_required(VERSION 2.8.3)
+project(ros_tutorials_service)
+
+## 캐킨 빌드를 할 때 요구되는 구성요소 패키지이다.
+## 의존성 패키지로 message_generation, std_msgs, roscpp이며 이 패키지들이 존재하지 않으면 빌드 도중에 에러가 난다.
+find_package(catkin REQUIRED COMPONENTS message_generation std_msgs roscpp)
+
+# 서비스 선언: SrvTutorial.srv
+add_service_files(FILES SrvTutorial.srv)
+
+## 의존하는 메시지를 설정하는 옵션이다.
+## std_msgs가 설치되어 있지 않다면 빌드 도중에 에러가 난다.
+generate_messages(DEPENDENCIES std_msgs)
+
+## 캐킨 패키지 옵션으로 라이브러리, 캐킨 빌드 의존성, 시스템 의존 패키지를 기술한다.
+catkin_package(
+  LIBRARIES ros_tutorials_service
+  CATKIN_DEPENDS std_msgs roscpp
+)
+
+## include 디렉터리를 설정한다.
+include_directories(${catkin_INCLUDE_DIRS})
+
+## servce_server 노드에 대한 빌드 옵션이다.
+## 실행파일, 타겟 링크 라이브러리, 추가 의존성 등을 설정한다.
+add_executable(service_server src/service_server.cpp)
+add_dependencies(service_server ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(service_server ${catkin_LIBRARIES})
+
+## service_client 노드에 대한 빌드 옵션이다.
+add_executable(service_client src/service_client.cpp)
+add_dependencies(service_client ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(service_client ${catkin_LIBRARIES})
+```
+4. 서비스 파일 작성
+```
+$ roscd ros_tutorials_service # 패키지 폴더로 이동
+$ mkdir srv                   # 패키지에 srv라는 서비스 폴더를 신규 작성
+$ cd srv                      # 작성한 srv 폴더로 이동
+$ gedit SrvTutorial.srv       # SrvTutorial.srv 파일 신규 작성 및 내용 수정
+```
+* (메시지 형식) (서비스 요청: request)
+* --- (요청과 응답을 구분하는 구분자)
+* (메시지 형식) (서비스 응답: response) 
+```
+int64 a
+int64 b
+---
+int64 result
+```
+5. 서비스 서버 노드 작성
+```
+$ roscd ros_tutorials_service/src   # 패키지의 소스 폴더인 src 폴더로 이동
+$ gedit service_server.cpp          # 소스 파일 신규 작성 및 내용 수정
+```
+```cpp
+#include "ros/ros.h"                          // ROS Default Header File
+#include "ros_tutorials_service/SrvTutorial.h"// SrvTutorial Service File Header (Automatically created after build)
+
+// The below process is performed when there is a service request
+// The service request is declared as 'req', and the service response is declared as 'res'
+bool calculation(ros_tutorials_service::SrvTutorial::Request &req,
+                 ros_tutorials_service::SrvTutorial::Response &res)
+{
+  // The service name is 'ros_tutorial_srv' and it will call 'calculation' function upon the service request.
+  res.result = req.a + req.b;
+
+  // Displays 'a' and 'b' values used in the service request and
+  // the 'result' value corresponding to the service response
+  ROS_INFO("request: x=%ld, y=%ld", (long int)req.a, (long int)req.b);
+  ROS_INFO("sending back response: %ld", (long int)res.result);
+
+  return true;
+}
+
+int main(int argc, char **argv)              // Node Main Function
+{
+  ros::init(argc, argv, "service_server");   // Initializes Node Name
+  ros::NodeHandle nh;                        // Node handle declaration
+
+  // Declare service server 'ros_tutorials_service_server'
+  // using the 'SrvTutorial' service file in the 'ros_tutorials_service' package.
+  // The service name is 'ros_tutorial_srv' and it will call 'calculation' function
+  // upon the service request.
+  ros::ServiceServer ros_tutorials_service_server = nh.advertiseService("ros_tutorial_srv", calculation);
+
+  ROS_INFO("ready srv server!");
+
+  ros::spin();    // Wait for the service request
+
+  return 0;
+}
+```
+6. 서비스 클라이언트 노드 작성 
+```
+$ roscd ros_tutorials_service/src   # 패키지의 소스 폴더인 src 폴더로 이동
+$ gedit service_client.cpp          # 소스 파일 신규 작성 및 내용 수정
+```
+```cpp
+#include "ros/ros.h"                          // ROS Default Header File
+#include "ros_tutorials_service/SrvTutorial.h"// SrvTutorial Service File Header (Automatically created after build)
+#include <cstdlib>                            // Library for using the "atoll" function
+
+int main(int argc, char **argv)               // Node Main Function
+{
+  ros::init(argc, argv, "service_client");    // Initializes Node Name
+
+  if (argc != 3)  // Input value error handling
+  {
+    ROS_INFO("cmd : rosrun ros_tutorials_service service_client arg0 arg1");
+    ROS_INFO("arg0: double number, arg1: double number");
+    return 1;
+  }
+
+  ros::NodeHandle nh;       // Node handle declaration for communication with ROS system
+
+  // Declares service client 'ros_tutorials_service_client'
+  // using the 'SrvTutorial' service file in the 'ros_tutorials_service' package.
+  // The service name is 'ros_tutorial_srv'
+  ros::ServiceClient ros_tutorials_service_client = nh.serviceClient<ros_tutorials_service::SrvTutorial>("ros_tutorial_srv");
+
+  // Declares the 'srv' service that uses the 'SrvTutorial' service file
+  ros_tutorials_service::SrvTutorial srv;
+
+  // Parameters entered when the node is executed as a service request value are stored at 'a' and 'b'
+  srv.request.a = atoll(argv[1]);
+  srv.request.b = atoll(argv[2]);
+
+  // Request the service. If the request is accepted, display the response value
+  if (ros_tutorials_service_client.call(srv))
+  {
+    ROS_INFO("send srv, srv.Request.a and b: %ld, %ld", (long int)srv.request.a, (long int)srv.request.b);
+    ROS_INFO("receive srv, srv.Response.result: %ld", (long int)srv.response.result);
+  }
+  else
+  {
+    ROS_ERROR("Failed to call service ros_tutorial_srv");
+    return 1;
+  }
+  return 0;
+}
+```
+7. ROS 노드 빌드 
+```
+$ cd ~/catkin_ws && catkin_make   # catkin 폴더로 이동 후 catkin 빌드 실행
+```
+* ros_tutorials_service 패키지의 소스 코드 파일: ~/catkin_ws/src/ros_tutorials_service/src
+* ros_tutorials_service 패키지의 메시지 파일: ~/catkin_ws/src/ros_tutorials_sercie/msg
+* ~/catkin_ws/build : 캐킨 빌드에서 사용된 설정 내용이 저장
+* ~/catkin_ws/devel/lib/ros_tutorials_service : 실행 파일이 저장
+* ~/catkin_ws/devel/include/ros_tutorials_service 메시지 파일로부터 자동 생성된 메시지 헤더 파일이 저장
+8. 서비스 서버 실행 
+* <img src="./img/ROS042.png" width="700" /> 
+* 서비스 서버는 서비스 요청이 있기 전까지 아무런 처리를 하지 않고 기다린다
+9. 서비스 클라이언트 실행
+* <img src="./img/ROS043.png" width="700" /> 
+* 서비스 클라이언트는 실행 매개변수 2와 3을 a와 b값으로 서비스를 요청하게 되고 결괏값으로 둘의 합인 5를 응답값으로 전송
+* 서비스는 일회성 메시지 통신이기 때문에 요청과 응답이 완료되면 두 노드의 접속이 끊긴다
+```
+$ rosservice call /ros_tutorial_srv 5 15
+result: 20
+```
+* 서비스 요청은 서버와 클라이언트 두 노드를 실행하는 방법 말고도 rosservice call 명령어를 이용해 통신하는 방법도 있다
+```
+$ rqt
+[Plugins] -> [Service] -> [Service Caller]
+```
+* <img src="./img/ROS044.png" width="700" /> 
+* service 선택 후에 a = 10, b = 30 입력하고, Call 버튼을 누르면 Result에 40 값이 표시된다
