@@ -515,3 +515,52 @@ $ rosrun ros_tutorials_service service_server
 4. 파라미터 사용 예
 * 파라미터 값을 변경하여 서비스 요청 결과를 바꿀 수 있다 
 * <img src="./img/ROS046.png" width="700" /> 
+
+## roslaunch란? 
+* <img src="./img/ROS047.png" width="700" /> 
+
+## roslaunch 사용법
+1. launch 파일 생성 
+```
+$ roscd ros_tutorials_topic
+$ mkdir launch
+$ cd launch
+$ gedit union.launch
+```
+```xml
+<launch>
+    <node pkg="ros_tutorials_topic" type="topic_publisher" name="topic_publisher1"/>
+    <node pkg="ros_tutorials_topic" type="topic_subscriber" name="topic_subscriber1"/>
+    <node pkg="ros_tutorials_topic" type="topic_publisher" name="topic_publisher2"/>
+    <node pkg="ros_tutorials_topic" type="topic_subscriber" name="topic_subscriber2"/>
+</launch>
+```
+* pkg 패키지의 이름
+* type 실제 실행할 노드의 이름(노드명)
+* name 위 type에 해당하는 노드가 실행될 때 붙여지는 이름(실행명), 일반적으로 type과 같게 설정하지만 필요에 따라 중복된 노드를 두개 이상 실행할 때 이름을 변경 가능하다
+2. launch 실행
+```
+$ roslaunch ros_tutorial_topic union.launch --screen
+```
+* --screen 옵션을 추가해주면 해당 터미널에 실행되는 모든 노드들의 출력들이 터미널 스크린에 표시된다
+3. 문제점 
+* <img src="./img/ROS048.png" width="700" />
+* publisher 노드와 subscriber 노드를 각각 두 개씩 구동하여 서로 별도의 메시지를 통신하게 한다는 의도와 다르게 publisher 하나당 1:N으로 모두 subscribe 하고 있음
+* 이 문제를 다른 roslaunch 네임 스페이스 태그를 사용하여 해결 가능 
+```xml
+<launch>
+  <group ns="ns1">
+    <node pkg="ros_tutorials_topic" type="topic_publisher" name="topic_publisher"/>
+    <node pkg="ros_tutorials_topic" type="topic_subscriber" name="topic_subscriber"/>
+  </group>
+  <group ns="ns2">
+    <node pkg="ros_tutorials_topic" type="topic_publisher" name="topic_publisher"/>
+    <node pkg="ros_tutorials_topic" type="topic_subscriber" name="topic_subscriber"/>
+  </group>
+</launch>
+```
+* 네임 스페이스 태그 사용 결과 
+* <img src="./img/ROS049.png" width="700" />
+
+## launch 태그 
+* <img src="./img/ROS050.png" width="700" />
