@@ -1,4 +1,4 @@
-## Riz란? 
+## RViz란? 
 * ROS의 3D 시각화 Tool 이다.
 
 ## RViz의 주요 기능
